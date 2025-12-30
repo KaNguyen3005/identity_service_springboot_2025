@@ -1,0 +1,3 @@
+1. Ý nghĩa các status code ?
+- Lỗi mà không xác định được -> Lỗi server
+- Lỗi bad request khi mà user input không hợp lệ,...

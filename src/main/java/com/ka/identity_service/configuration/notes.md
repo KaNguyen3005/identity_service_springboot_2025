@@ -34,4 +34,12 @@
   - DEBUG: Chi tiết kỹ thuật (Dành cho lập trình viên soi lỗi).
 
   - TRACE: Chi tiết tận "chân tơ kẽ tóc".
-- Log có thể được ghi ra console hoặc file 
+- Log có thể được ghi ra console hoặc file
+11. Tại sao lại sử dụng Converter
+- Spring security chỉ nhìn các token như một chuỗi kì lạ -> Cần người phiên dịch
+12. Cả đoạn filterChain có nghĩa là sao ?
+- Là chúng ta đang khai báo một chuỗi bảo mật, từ phân quyền đến Jwt,..
+- oauth2ResourceServer chính là khai báo tòa nhà bảo mật bằng thẻ từ jwt
+- csrf là một cơ chế chống tấn công giả mạo nhưng trong jwt có rồi
+- tấn công giả mạo dựa trên cookie. Mỗi lần đăng nhập cookie sẽ được lưu lại và server tin tưởng cookie trên trình duyệt -> Hacker giả mạo cookie
+- 
