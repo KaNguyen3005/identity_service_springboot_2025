@@ -55,8 +55,19 @@ public class UserService {
 
         return userMapper.toUserResponse(userRepository.save(user));
     }
+    //===
+    //Một chức năng kiểm tra scope và quyền trước hoặc sau khi gọi API
+    //===
 
-    @PreAuthorize("hasRole('ADMIN')")
+    /*
+    * -Sau khi config lại thì has role không được sử dụng cho permisson do đó phải sử
+    * dụng phương thức khác
+    * -Nhưng khi để scope trong token như thế nào sẽ làm cho token trở nên nặng hơn
+    * -Do đó tùy theo dự án mà quyết định phương án này
+    * */
+
+//    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasAuthority('APPROVE_POST')")
     public List<UserResponse> getUsers(){
         List<UserResponse> users = new ArrayList<>();
         for(User user : userRepository.findAll()){

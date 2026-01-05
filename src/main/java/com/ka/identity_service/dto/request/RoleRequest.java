@@ -1,6 +1,7 @@
 package com.ka.identity_service.dto.request;
 
 
+import jakarta.persistence.Id;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 

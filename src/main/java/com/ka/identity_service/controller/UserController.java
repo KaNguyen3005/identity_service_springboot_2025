@@ -63,8 +63,12 @@ public class UserController {
         return apiResponse;
     }
 
+    /*
+    * Phải có annotation valid
+    * nếu không thì sẽ không validate trong dto
+    * */
     @PutMapping("/{userId}")
-    ApiResponse<UserResponse> updateUser(@PathVariable("userId") String userId, @RequestBody UserUpdateRequest request){
+    ApiResponse<UserResponse> updateUser(@PathVariable("userId") String userId, @RequestBody @Valid UserUpdateRequest request){
         ApiResponse apiResponse = new ApiResponse<>();
         apiResponse.setResult(userService.updateUser(userId, request));
         return apiResponse;
