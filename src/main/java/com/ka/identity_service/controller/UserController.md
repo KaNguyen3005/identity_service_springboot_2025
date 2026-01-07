@@ -5,3 +5,4 @@
 2. Cơ chế hoat động của câu lệnh SecurityContextHolder?
 - Hãy tưởng tượng thằng này chính là một tủ hồ sơ, và biết về sơ đồ hoạt động của String security
 - Nó sẽ quá rất nhiều lớp lọc và khi giải mã token thì đánh dấu nó chính là hồ sơ hợp lệ và để vào đó
+k
