@@ -3,6 +3,7 @@ package com.ka.identity_service.controller;
 import com.ka.identity_service.dto.request.ApiResponse;
 import com.ka.identity_service.dto.request.AuthenticationRequest;
 import com.ka.identity_service.dto.request.IntrospectRequest;
+import com.ka.identity_service.dto.request.LogoutRequest;
 import com.ka.identity_service.dto.response.AuthenticationResponse;
 import com.ka.identity_service.dto.response.IntrospectResponse;
 import com.ka.identity_service.service.AuthenticationService;
@@ -41,4 +42,10 @@ public class AuthenticationController {
                 .build();
     }
 
+    @PostMapping("/logout")
+    ApiResponse<Void> logout(@RequestBody LogoutRequest request)
+            throws ParseException, JOSEException {
+        authenticationService.logout(request);
+        return ApiResponse.<Void>builder().build();
+    }
 }

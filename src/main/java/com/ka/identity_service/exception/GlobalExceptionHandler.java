@@ -70,9 +70,12 @@ public class GlobalExceptionHandler {
 
         }
 
+        //Trả về apiResponse khi có lỗi và bên trong đã được map
         ApiResponse apiResponse = new ApiResponse();
 
         apiResponse.setCode(errorCode.getCode());
+
+        //Check attributes trả về có null không , không thì -> MapAttribute vào erro message trong error
         apiResponse.setMessage(Objects.nonNull(attributes) ?
                 mapAttribute(errorCode.getMessage(), attributes) : errorCode.getMessage());
 
