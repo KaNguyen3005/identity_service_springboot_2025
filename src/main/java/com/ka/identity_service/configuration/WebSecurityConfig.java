@@ -2,6 +2,7 @@
 package com.ka.identity_service.configuration;
 
 // Import các annotation và class cần thiết cho cấu hình bảo mật
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -12,9 +13,6 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.oauth2.jose.jws.MacAlgorithm;
-import org.springframework.security.oauth2.jwt.JwtDecoder;
-import org.springframework.security.oauth2.jwt.NimbusJwtDecoder;
 import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationConverter;
 import org.springframework.security.oauth2.server.resource.authentication.JwtGrantedAuthoritiesConverter;
 import org.springframework.security.web.SecurityFilterChain;
@@ -37,12 +35,15 @@ public class WebSecurityConfig {
             "/user",
             "/auth/token",
             "/auth/introspect",
-            "/auth/logout"
+            "/auth/logout",
+            "/auth/refresh"
     };
 
     // Lấy secret key dùng để ký và verify JWT từ file application.properties / yml
-    @Value("${jwt.signerKey}")
-    private String signerKey;
+
+
+    @Autowired
+    private CustomJwtDecoder customJwtDecoder;
 
     // Bean cấu hình chuỗi filter bảo mật của Spring Security
     @Bean
@@ -73,7 +74,7 @@ public class WebSecurityConfig {
                         .jwt(jwtConfigurer ->
                                 jwtConfigurer
                                         // Decoder dùng để verify và decode JWT
-                                        .decoder(jwtDecoder())
+                                        .decoder(customJwtDecoder)
 
                                         // Converter dùng để convert JWT -> Authentication
                                         // (trích xuất role, permission từ token)
@@ -126,23 +127,23 @@ public class WebSecurityConfig {
      * - Chữ ký token
      * - Thuật toán ký (HS512)
      */
-    @Bean
-    JwtDecoder jwtDecoder(){
-
-        // Tạo secret key từ signerKey
-        // HS512 là thuật toán HMAC sử dụng secret key
-        SecretKeySpec secretKeySpec =
-                new SecretKeySpec(signerKey.getBytes(), "HS512");
-
-        // Tạo JwtDecoder dùng Nimbus
-        // Decoder này sẽ:
-        // - Verify chữ ký
-        // - Decode payload JWT
-        return NimbusJwtDecoder
-                .withSecretKey(secretKeySpec)
-                .macAlgorithm(MacAlgorithm.HS512)
-                .build();
-    }
+//    @Bean
+//    JwtDecoder jwtDecoder(){
+//
+//        // Tạo secret key từ signerKey
+//        // HS512 là thuật toán HMAC sử dụng secret key
+//        SecretKeySpec secretKeySpec =
+//                new SecretKeySpec(signerKey.getBytes(), "HS512");
+//
+//        // Tạo JwtDecoder dùng Nimbus
+//        // Decoder này sẽ:
+//        // - Verify chữ ký
+//        // - Decode payload JWT
+//        return NimbusJwtDecoder
+//                .withSecretKey(secretKeySpec)
+//                .macAlgorithm(MacAlgorithm.HS512)
+//                .build();
+//    }
 
     /*
      * Bean mã hóa mật khẩu
