@@ -32,7 +32,7 @@ public class WebSecurityConfig {
     // Danh sách các endpoint public (không cần đăng nhập)
     // Chỉ áp dụng cho method POST (config ở dưới)
     private final String[] PUBLIC_ENDPOINTS = {
-            "/user",
+            "/users",
             "/auth/token",
             "/auth/introspect",
             "/auth/logout",
