@@ -11,9 +11,11 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.TestPropertySource;
 
 import java.time.LocalDate;
+import java.util.Optional;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
@@ -82,7 +84,8 @@ public class UserServiceTest {
 
         // Giả lập entity User được lưu trong database
         user = User.builder()
-                .username("kakaka2")
+                .id("4055f7be-defd-4c5c-8195-ab7108ba1121")
+                .username("john12")
                 .firstName("john")
                 .lastName("Doe")
                 .password("12345678")
@@ -144,5 +147,42 @@ public class UserServiceTest {
         // Kiểm tra mã lỗi đúng như thiết kế
         Assertions.assertThat(exception.getErrorcode().getCode())
                 .isEqualTo(1001);
+    }
+
+    @Test
+// Giả lập một Security Context với username là "john12" để vượt qua lớp bảo mật (Spring Security)
+    @WithMockUser(username = "john12")
+    void getMyInfo_valid_success() {
+        // GIVEN: Thiết lập hành vi giả lập cho repository
+        // Khi gọi hàm findByUsername với bất kỳ chuỗi nào, trả về một Optional chứa đối tượng user đã tạo sẵn
+        when(userRepository.findByUsername(anyString()))
+                .thenReturn(Optional.of(user));
+
+        // WHEN: Thực hiện gọi hàm nghiệp vụ cần kiểm thử
+        var response = userService.getMyInfo();
+
+        // THEN: Kiểm tra kết quả trả về (Assertion)
+        // Xác nhận username trong kết quả phải khớp với "john12"
+        Assertions.assertThat(response.getUsername()).isEqualTo("john12");
+        // Xác nhận ID người dùng khớp với giá trị mong đợi
+        Assertions.assertThat(response.getId()).isEqualTo("4055f7be-defd-4c5c-8195-ab7108ba1121");
+    }
+
+    @Test
+// Giả lập Security Context với username "john12"
+    @WithMockUser(username = "john12")
+    void getMyInfo_userNotFound_error() {
+        // GIVEN: Thiết lập tình huống không tìm thấy người dùng trong cơ sở dữ liệu
+        // Khi tìm kiếm theo username, trả về kết quả rỗng (null/empty)
+        when(userRepository.findByUsername(anyString()))
+                .thenReturn(Optional.ofNullable(null));
+
+        // WHEN & THEN: Thực thi hành động và kiểm tra ngoại lệ
+        // Mong đợi hệ thống tung ra một AppException khi không tìm thấy thông tin
+        var exception = assertThrows(AppException.class,
+                () -> userService.getMyInfo());
+
+        // Xác nhận rằng mã lỗi (Error Code) trả về đúng là 1005 (thường là USER_NOT_EXISTED)
+        Assertions.assertThat(exception.getErrorcode().getCode()).isEqualTo(1005);
     }
 }

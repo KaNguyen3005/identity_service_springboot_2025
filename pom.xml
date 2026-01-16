@@ -8,7 +8,7 @@
         <version>3.2.2</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
-    <groupId>com.devteria</groupId>
+    <groupId>com.ka</groupId>
     <artifactId>identity-service</artifactId>
     <name>identity-service</name>
     <version>0.0.1</version>
@@ -98,6 +98,20 @@
             <version>2.3.232</version>
             <scope>test</scope>
         </dependency>
+        <!-- Source: https://mvnrepository.com/artifact/org.jacoco/jacoco-maven-plugin -->
+        <dependency>
+            <groupId>org.jacoco</groupId>
+            <artifactId>jacoco-maven-plugin</artifactId>
+            <version>0.8.12</version>
+            <scope>compile</scope>
+        </dependency>
+        <!-- Source: https://mvnrepository.com/artifact/org.springframework.security/spring-security-test -->
+        <dependency>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-test</artifactId>
+            <version>7.0.2</version>
+            <scope>test</scope>
+        </dependency>
     </dependencies>
     <dependencyManagement>
         <dependencies>
@@ -175,10 +189,10 @@
                 </executions>
                 <configuration>
                     <excludes>
-                        <exclude>com/devteria/identityservice/dto/**</exclude>
-                        <exclude>com/devteria/identityservice/entity/**</exclude>
-                        <exclude>com/devteria/identityservice/mapper/**</exclude>
-                        <exclude>com/devteria/identityservice/configuration/**</exclude>
+                        <exclude>com/ka/identity_service/dto/**</exclude>
+                        <exclude>com/ka/identity_service/entity/**</exclude>
+                        <exclude>com/ka/identity_service/mapper/**</exclude>
+                        <exclude>com/ka/identity_service/configuration/**</exclude>
                     </excludes>
                 </configuration>
             </plugin>
